@@ -1,0 +1,267 @@
+set $mod Mod4
+set $mod2 Mod1
+set $mon1 DP-0
+set $mon2 HDMI-1
+
+set $refresh_i3blocks pkill -SIGRTMIN+10 i3blocks
+
+## === BIND ===
+
+set $mod Mod4
+set $mod2 Mod1
+
+### === base ===
+
+# kill focused window
+bindsym $mod+q kill
+bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
+
+# change focus
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+colon move right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+#bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+f floating toggle
+# change focus between tiling / floating windows
+#bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+# focus the child container
+#bindsym $mod+d focus child
+
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+mode "resize" {
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+focus_follows_mouse no
+
+bindsym $mod+m bar mode toggle
+
+
+## === custom ===
+
+bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+Shift+Return exec "rofi -modi drun,run -show drun"
+
+set $refresh_i3blocks pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && $refresh_i3blocks 
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && $refresh_i3blocks
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3blocks 
+bindsym Shift+Pause exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3blocks 
+
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+
+bindsym $mod+t exec --no-startup-id pkill picom && notify-send 'compositor down'
+bindsym $mod+Shift+t exec --no-startup-id picom -b && notify-send 'compositor up'
+
+bindsym --release Print exec $HOME/.local/bin/screenshot.x11
+bindsym $mod+Return exec alacritty
+
+bindsym $mod+$mod2+v exec clipcat-menu insert
+# bindsym $mod+o exec clipcat-menu remove
+
+
+## === WORKSPACE ===
+
+set $ws11 "11"
+set $ws12 "12"
+set $ws13 "13"
+set $ws14 "14"
+set $ws15 "15"
+set $ws21 "21"
+set $ws22 "22"
+set $ws23 "23"
+set $ws24 "24"
+set $ws25 "25"
+
+workspace $ws11 output $mon1
+workspace $ws12 output $mon1
+workspace $ws13 output $mon1
+workspace $ws14 output $mon1
+workspace $ws15 output $mon1
+workspace $ws21 output $mon2
+workspace $ws22 output $mon2
+workspace $ws23 output $mon2
+workspace $ws24 output $mon2
+workspace $ws25 output $mon2
+
+bindsym $mod+1 workspace number $ws11
+bindsym $mod+2 workspace number $ws12
+bindsym $mod+3 workspace number $ws13
+bindsym $mod+4 workspace number $ws14
+bindsym $mod+5 workspace number $ws15
+bindsym $mod2+1 workspace number $ws21
+bindsym $mod2+2 workspace number $ws22
+bindsym $mod2+3 workspace number $ws23
+bindsym $mod2+4 workspace number $ws24
+bindsym $mod2+5 workspace number $ws25
+
+bindsym $mod+Ctrl+Left workspace prev_on_output
+bindsym $mod+Ctrl+Right workspace next_on_output
+
+bindsym $mod+Shift+1 move container to workspace number $ws11; workspace number $ws11
+bindsym $mod+Shift+2 move container to workspace number $ws12; workspace number $ws12
+bindsym $mod+Shift+3 move container to workspace number $ws13; workspace number $ws13
+bindsym $mod+Shift+4 move container to workspace number $ws14; workspace number $ws14
+bindsym $mod+Shift+5 move container to workspace number $ws15; workspace number $ws15
+bindsym $mod2+Shift+1 move container to workspace number $ws21; workspace number $ws21
+bindsym $mod2+Shift+2 move container to workspace number $ws22; workspace number $ws22
+bindsym $mod2+Shift+3 move container to workspace number $ws23; workspace number $ws23
+bindsym $mod2+Shift+4 move container to workspace number $ws24; workspace number $ws24
+bindsym $mod2+Shift+5 move container to workspace number $ws25; workspace number $ws25
+
+bindsym $mod+Ctrl+Shift+Left move container to workspace prev_on_output; workspace prev_on_output
+bindsym $mod+Ctrl+Shift+Right move container to workspace next_on_output; workspace next_on_output 
+
+
+## === EXEC ===
+
+exec --no-startup-id dex --autostart --environment i3
+exec --no-startup-id numlockx
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id setxkbmap -layout us,ru -option 'grp:win_space_toggle'
+
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec --no-startup-id nm-applet
+exec --no-startup-id blueman-applet
+exec --no-startup-id dunst
+
+exec --no-startup-id $HOME/.local/bin/xrandr_layout.sh
+exec --no-startup-id picom -b
+exec --no-startup-id hsetroot -solid "#2E2641"
+
+exec_always --no-startup-id clipcatd -r
+
+exec --no-startup-id $HOME/.local/bin/mount_karl.sh
+
+
+## === STYLE ===
+
+font pango:monospace 14
+
+default_border pixel 1
+default_floating_border normal
+hide_edge_borders none
+
+client.focused          #3b1261 #3b1261 #ffffff #ff00ff
+client.focused_inactive #333333 #5f676a #ffffff #484e50
+client.unfocused        #222222 #222222 #888888 #292d2e
+client.urgent           #2f343a #900000 #ffffff #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000 
+client.background       #462466
+
+
+## === BAR ===
+
+bar {
+    position top
+    status_command i3blocks
+    tray_output $mon2
+
+    bindsym button4 nop
+    bindsym button5 nop
+
+    colors {
+        focused_workspace #3b1261 #3b1261 #ffffff
+    }
+}
+
+# exec_always --no-startup-id $HOME/.config/polybar/material/launch.sh
+# bindsym $mod+Shift+Return exec sh -c $HOME/.config/polybar/material/scripts/launcher.sh
+
+
+## === GAPS ===
+
+gaps inner 10
+gaps outer -1
+smart_gaps on
+smart_borders on
+
+# Press $mod+Shift+g to enter the gap mode. Choose o or i for modifying outer/inner gaps. Press one of + / - (in-/decrement for current workspace) or 0 (remove gaps for current workspace). If you also press Shift with these keys, the change will be global for all workspaces.
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        bindsym o      mode "$mode_gaps_outer"
+        bindsym i      mode "$mode_gaps_inner"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_inner" {
+        bindsym plus  gaps inner current plus 5
+        bindsym minus gaps inner current minus 5
+        bindsym 0     gaps inner current set 0
+
+        bindsym Shift+plus  gaps inner all plus 5
+        bindsym Shift+minus gaps inner all minus 5
+        bindsym Shift+0     gaps inner all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_outer" {
+        bindsym plus  gaps outer current plus 5
+        bindsym minus gaps outer current minus 5
+        bindsym 0     gaps outer current set 0
+
+        bindsym Shift+plus  gaps outer all plus 5
+        bindsym Shift+minus gaps outer all minus 5
+        bindsym Shift+0     gaps outer all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
