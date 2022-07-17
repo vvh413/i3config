@@ -1,7 +1,6 @@
 set $mod Mod4
 set $mod2 Mod1
-set $mon1 DP-0
-set $mon2 HDMI-1
+set $mon1 eDP1
 
 set $refresh_i3blocks pkill -SIGRTMIN+10 i3blocks
 
